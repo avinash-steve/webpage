@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mood Detector</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    h1 {
+      color: #4f46e5;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .result {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .happy { color: #16a34a; background-color: #dcfce7; }
+    .sad { color: #1d4ed8; background-color: #dbeafe; }
+    .angry { color: #b91c1c; background-color: #fee2e2; }
+    .worried { color: #ca8a04; background-color: #fef9c3; }
+    .tired { color: #6b7280; background-color: #e5e7eb; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mood Detector</h1>
+    <input id="sentence" type="text" placeholder="Type how you're feeling..." />
+    <button onclick="detectMood()">Detect Mood</button>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const moodMap = {
+      happy: {
+        keywords: ["happy", "excited", "great", "joyful", "awesome", "good", "glad", "delighted"],
+        emoji: "😊"
+      },
+      sad: {
+        keywords: ["sad", "upset", "depressed", "unhappy", "cry", "hurt", "heartbroken"],
+        emoji: "😢"
+      },
+      angry: {
+        keywords: ["angry", "mad", "furious", "annoyed", "rage", "irritated", "frustrated"],
+        emoji: "😠"
+      },
+      worried: {
+        keywords: ["worried", "anxious", "nervous", "concerned", "scared", "afraid"],
+        emoji: "😟"
+      },
+      tired: {
+        keywords: ["tired", "exhausted", "sleepy", "drained", "fatigued", "burned out"],
+        emoji: "😴"
+      }
+    };
+
+    function detectMood() {
+      const text = document.getElementById("sentence").value.toLowerCase();
+      let detected = { mood: "neutral", emoji: "😐" };
+      let className = "";
+
+      for (const mood in moodMap) {
+        if (moodMap[mood].keywords.some(word => text.includes(word))) {
+          detected.mood = mood;
+          detected.emoji = moodMap[mood].emoji;
+          className = mood;
+          break;
+        }
+      }
+
+      const resultEl = document.getElementById("result");
+      resultEl.className = "result " + (className || "");
+      resultEl.textContent = `Detected Mood: ${detected.mood.toUpperCase()} ${detected.emoji}`;
+    }
+  </script>
+</body>
+</html>
